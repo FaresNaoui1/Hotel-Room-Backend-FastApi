@@ -6,10 +6,9 @@ class HotelSchema(BaseModel):
     id: int
     name: str
     type: str
-    vol: str
-    price: int
-    duration: str
-    vip: bool
+    location: str
+    rating: int
+    description: str
     image_url: Optional[str] = None  # Optional field
 
     class Config:
@@ -17,10 +16,10 @@ class HotelSchema(BaseModel):
 
 # Pydantic model for creating a hotel
 class HotelCreate(BaseModel):
+    id: int
     name: str
     type: str
-    vol: str
-    price: int
-    duration: str
-    vip: bool
-    image_url: Optional[str] = None  # Optional field
+    location: str
+    rating: int
+    description: str
+    image_url: Optional[str] = None

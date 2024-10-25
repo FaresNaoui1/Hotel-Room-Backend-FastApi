@@ -1,30 +1,25 @@
-from datetime import datetime
-
 from pydantic import BaseModel
-from typing import List, Optional
-
 
 class RoomSchema(BaseModel):
-    id =int
-    number =str
-    vip = bool
-    price = int
-    available = bool
-    start_time = datetime
-    end_time = datetime
-    number_of_beds = int
-
+    id: int
+    number: int
+    vip: bool
+    price: int
+    available: bool
+    start_time: str  # or date type if you want to parse as date
+    end_time: str
+    number_of_beds: int
+    hotel_id: int
 
     class Config:
-        orm_mode = True
-
+        from_attributes = True  # Replaces `orm_mode` in Pydantic V2
 
 class RoomCreate(BaseModel):
-    id = int
-    number = str
-    vip = bool
-    price = int
-    available = bool
-    start_time = datetime
-    end_time = datetime
-    number_of_beds = int
+    number: int
+    vip: bool
+    price: int
+    available: bool
+    start_time: str
+    end_time: str
+    number_of_beds: int
+    hotel_id: int
