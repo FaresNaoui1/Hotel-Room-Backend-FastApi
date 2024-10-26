@@ -4,7 +4,7 @@ class RoomSchema(BaseModel):
     id: int
     number: int
     vip: bool
-    price: int
+    price: float
     available: bool
     start_time: str  # or date type if you want to parse as date
     end_time: str
@@ -17,7 +17,7 @@ class RoomSchema(BaseModel):
 class RoomCreate(BaseModel):
     number: int
     vip: bool
-    price: int
+    price: float
     available: bool
     start_time: str
     end_time: str

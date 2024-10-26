@@ -4,6 +4,7 @@ from typing import List
 from Classes.Room import Room
 from database import SessionLocal
 from PydanticModels.pydantic_model_room import RoomCreate, RoomSchema
+from datetime import date
 
 router_room = APIRouter()
 
@@ -58,3 +59,36 @@ def delete_room(room_id: int, db: Session = Depends(get_db)):
     db.delete(db_room)
     db.commit()
     return {"message": "Room deleted successfully"}
+
+# Get rooms by VIP status
+@router_room.get("/vip/{vip_status}", response_model=List[RoomSchema])
+def get_rooms_by_vip(vip_status: bool, db: Session = Depends(get_db)):
+    rooms = db.query(Room).filter(Room.vip == vip_status).all()
+    return rooms
+
+# Get rooms by availability
+@router_room.get("/available/{availability}", response_model=List[RoomSchema])
+def get_rooms_by_availability(availability: bool, db: Session = Depends(get_db)):
+    rooms = db.query(Room).filter(Room.available == availability).all()
+    return rooms
+
+# Get rooms by number of beds
+@router_room.get("/beds/{num_beds}", response_model=List[RoomSchema])
+def get_rooms_by_beds(num_beds: int, db: Session = Depends(get_db)):
+    rooms = db.query(Room).filter(Room.number_of_beds == num_beds).all()
+    return rooms
+
+# Get rooms by price range
+@router_room.get("/price/", response_model=List[RoomSchema])
+def get_rooms_by_price(min_price: float, max_price: float, db: Session = Depends(get_db)):
+    rooms = db.query(Room).filter(Room.price.between(min_price, max_price)).all()
+    return rooms
+
+# Get rooms by duration of stay
+@router_room.get("/duration/", response_model=List[RoomSchema])
+def get_rooms_by_duration(min_days: int, max_days: int, db: Session = Depends(get_db)):
+    rooms = db.query(Room).all()
+    filtered_rooms = [
+        room for room in rooms if room.duration and min_days <= room.duration <= max_days
+    ]
+    return filtered_rooms

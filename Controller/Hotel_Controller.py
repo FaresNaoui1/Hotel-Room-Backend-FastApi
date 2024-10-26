@@ -58,3 +58,27 @@ def delete_hotel(hotel_id: int, db: Session = Depends(get_db)):
     db.delete(db_hotel)
     db.commit()
     return {"message": "Hotel deleted successfully"}
+
+# Get Hotels By Type
+@router_hotel.get("/type/{type}", response_model=List[HotelSchema])
+def get_hotel_by_type(type: str, db: Session = Depends(get_db)):
+    hotels = db.query(Hotel).filter(Hotel.type == type).all()
+    if not hotels:
+        raise HTTPException(status_code=404, detail="No hotels found for this type")
+    return hotels
+
+# Get Hotels By Location
+@router_hotel.get("/location/{location}", response_model=List[HotelSchema])
+def get_hotel_by_location(location: str, db: Session = Depends(get_db)):
+    hotels = db.query(Hotel).filter(Hotel.location == location).all()
+    if not hotels:
+        raise HTTPException(status_code=404, detail="No hotels found in this location")
+    return hotels
+
+# Get Hotels By Rating
+@router_hotel.get("/rating/{rating}", response_model=List[HotelSchema])
+def get_hotel_by_rating(rating: int, db: Session = Depends(get_db)):
+    hotels = db.query(Hotel).filter(Hotel.rating == rating).all()
+    if not hotels:
+        raise HTTPException(status_code=404, detail="No hotels found with this rating")
+    return hotels

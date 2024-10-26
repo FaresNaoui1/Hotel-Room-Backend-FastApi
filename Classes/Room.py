@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, Date, String, ForeignKey, Table
+from sqlalchemy import Boolean, Column, Integer, Date, String, ForeignKey, Table, Float
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -16,7 +16,7 @@ class Room(Base):
     id = Column(Integer, primary_key=True, index=True)
     number = Column(Integer, unique=True, index=True)
     vip = Column(Boolean, default=False)
-    price = Column(Integer)
+    price = Column(Float)
     available = Column(Boolean, default=True)
     start_time = Column(Date)
     end_time = Column(Date)
