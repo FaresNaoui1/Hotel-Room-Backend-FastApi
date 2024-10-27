@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import List
@@ -7,20 +7,14 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from Classes.User import User  # Import User model from Classes
-
-from database import SessionLocal
+from database import SessionLocal, Base
+from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 from pydantic_model_user import UserBase, UserCreate
 
 # JWT configuration
-SECRET_KEY = "4e1e76881775c98ba7ead8b291c2f434b8bc3f8365635159993ab9c5b3045ecb2ce52c9539fae57f5113e1c2ecab6492f5f28f2670d2b30632c32ccd932934b9895e629d6865255bc90e16794bf22bb96482bcd33bb8ae7334ad77688d6f9a08eaf383f7b946d7a50db951e0a95a1f502434363040aa92196bbdd668e420516221ead35cee1d24f40b968789d781e7200d1e9cd1be1c466294b6e2771d8ea8f1b322c8ba76ae313f77876b9270eadd40061462a8873eedc000ba224eca0ba3bddfe8ac218bfc01dd84c064db1eab373766576a8f0986ffd9685d4cf9e4862aad256078fea88545a43d6129c5ea656fa49533eaa6ad39dab8559f5ea589f05e56"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-# Password hashing configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# FastAPI router
+app = FastAPI()
 router = APIRouter()
 
 # Dependency for database session
